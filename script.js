@@ -7,31 +7,35 @@ const message = document.getElementById("message");
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 //描画のための変数定義
-let ballRadius = 10;
+let ballRadius = 5;
 let x = canvas.width/2;
 let y = canvas.height-30;
 let dx = 4;
 let dy = -4;
-let paddleHeight = 20;
+let paddleHeight = 10;
 let paddleWidth = 80;
 let paddleX = (canvas.width-paddleWidth)/2;
 let rightPressed = false;
 let leftPressed = false;
-let brickRowCount = 10;
+let brickRowCount = 8;
 let brickColumnCount = 3;
-let brickWidth = 70;
-let brickHeight = 20;
+let brickWidth = 90;
+let brickHeight = 7.5;
 let brickPadding = 10;
-let brickOffsetTop = 30;
-let brickOffsetLeft = 30;
+let brickOffsetTop = 50;
+let brickOffsetLeft = 50;
 let score = 0;
 let lives = 3;
 let clear = null;
+function reset() {
+  message.innerText = "　";
+  result.innerText= "　";
+}
 
 //スタートボタンが押されるまで待機
 startButton.onclick = () => {
   //スタートボタンを非表示化
-  result.innerText = "";
+  reset();
   startButton.style.display = 'none';
 
   //ブロックの描画
@@ -63,6 +67,7 @@ startButton.onclick = () => {
           leftPressed = false;
       }
   }
+
   //マウスでの移動用関数
   function mouseMoveHandler(e) {
     let relativeX = e.clientX - canvas.offsetLeft;
@@ -79,7 +84,7 @@ startButton.onclick = () => {
         if(b.status == 1) {
           if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
             //スコア追加・跳ね返り処理
-            dy = -dy;
+            dy = -dy + (score / 15);
             b.status = 0;
             score++;
             if(score == brickRowCount*brickColumnCount) {
@@ -97,7 +102,7 @@ startButton.onclick = () => {
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#8ab";
     ctx.fill();
     ctx.closePath();
   }
@@ -106,7 +111,7 @@ startButton.onclick = () => {
   function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#8ab";
     ctx.fill();
     ctx.closePath();
   }
@@ -122,7 +127,7 @@ startButton.onclick = () => {
           bricks[c][r].y = brickY;
           ctx.beginPath();
           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-          ctx.fillStyle = "black";
+          ctx.fillStyle = "#8ab";
           ctx.fill();
           ctx.closePath();
         }
@@ -133,12 +138,12 @@ startButton.onclick = () => {
   //スコア・ライフの描画
   function drawScore() {
     ctx.font = "16px Arial";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#8ab";
     ctx.fillText("Score: "+score, 8, 20);
   }
   function drawLives() {
     ctx.font = "16px Arial";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#8ab";
     ctx.fillText("Lives: "+lives, canvas.width-65, 20);
   }
   
@@ -158,10 +163,10 @@ startButton.onclick = () => {
     
   
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-      dx = -dx + 0.1;
+      dx = -dx + (score / 15);
     }
     if(y + dy < ballRadius) {
-      dy = -dy + 0.1;
+      dy = -dy + (score / 15);
     } else if(y + dy > canvas.height-ballRadius) {
       if(x > paddleX && x < paddleX + paddleWidth) {
         dy = -dy;
@@ -173,10 +178,12 @@ startButton.onclick = () => {
           return result.innerText = "Your score: " + score + " Your lives: " + lives;
         } else {
           //ライフ減少時の処理
+          message.innerText = "Miss!";
+          setTimeout(reset , 1000);
           x = canvas.width/2;
           y = canvas.height-30;
-          dx = 3;
-          dy = -3;
+          dx = 3.5 + score / 15;
+          dy = -3.5 - score / 15;
           paddleX = (canvas.width-paddleWidth)/2;
         }
       }
@@ -184,9 +191,9 @@ startButton.onclick = () => {
 
     //移動
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
-      paddleX += 15;
+      paddleX += 12 - score / 2;
     } else if(leftPressed && paddleX > 0) {
-      paddleX -= 15;
+      paddleX -= 12 - score / 2;
     }
   
     x += dx;
