@@ -1,6 +1,6 @@
 # break-the-blocks
 ブロック崩しゲーム
-https://kenton116.github.io/break-the-blocks/index.html
+https://kenton116.github.io/break-the-blocks/game.html
 
 ## About this game
 このゲームは、下のパドルを操作し、ボールをバウンドさせて全てのブロックを壊すゲームです。
