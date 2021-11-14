@@ -80,3 +80,8 @@ footer p {
   text-align: center;
   background-color: #bbb;
 }
+
+#back {
+  display: none;
+  text-align: center;
+}

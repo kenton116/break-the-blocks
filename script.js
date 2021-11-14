@@ -3,6 +3,7 @@
 const startButton = document.getElementById("start-button");
 const result = document.getElementById("result");
 const message = document.getElementById("message");
+const back = document.getElementById("back");
 //canvas要素の取得
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
@@ -157,6 +158,7 @@ startButton.onclick = () => {
     drawLives();
     collisionDetection();
     if(clear === "clear") {
+      back.style.display = 'block';
       message.innerText = "GAME CLEAR! CONGRATULATS!"
       return result.innerText = "Your score: " + score + " Your lives: " + lives;
     }
@@ -175,6 +177,7 @@ startButton.onclick = () => {
         if(!lives) {
           //ゲームオーバー
           message.innerText = "GAME OVER! Try again!";
+          back.style.display = 'block';
           return result.innerText = "Your score: " + score + " Your lives: " + lives;
         } else {
           //ライフ減少時の処理
